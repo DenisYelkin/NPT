@@ -1,0 +1,71 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Apr 5, 2014, 4:36:30 PM
+    Author     : Yelkin
+*/
+.container > * {
+    float:left;
+    margin-right:5px;
+}
+
+.container {
+    left: 50%;
+    width: 700px;
+    position: absolute;
+    margin-left: -350px;
+    background-color: antiquewhite;
+    padding:10px;
+    margin-top: 20px;
+}
+
+/* this is called a clearfix. it makes sure that the container's children floats are cleared, without using extra markup */
+
+.container:before,
+.container:after {
+    content: " ";
+    display: table;
+}
+
+.container:after {
+    clear: both;
+}
+
+
+.searchType {
+    border-width: 0px;
+    border: antiquewhite;
+    border-style: none;
+}
+
+.movieData{
+    width: 490px;
+    word-break: break-all;
+    font-size: 18px;
+}
+/* end clearfix*/
+
+.moviePoster{
+    width:200px;
+}
+
+.movieDescription{    
+    border-top: black;
+    border-top-width: 1px;
+    border-top-style: solid;
+    margin-top: 5px;
+}
+
+.ratingRow{
+    font-style: oblique;
+    font-size: 24px;
+}
+
+.nominationRow {
+    border-bottom: darkblue;
+    border-bottom-style: dashed;
+    border-bottom-width: 1px;
+}

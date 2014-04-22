@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Special functions</title>
+        <link rel="stylesheet" type="text/css" href="main.css"/>
+    </h:head>
+    <h:body>
+        <h:form>
+            <table cellspacing="0">
+                <tr>
+                    <td>
+                        Самый популярный режиссер
+                        <h:commandButton action="${specialFunctionsController.setResultList(1)}" value="Найти"/>
+                    </td>
+                    <td rowspan="10">
+                        <ui:repeat var="item" value="${specialFunctionsController.resultList}" varStatus="status">
+                            ${item}
+                            <br/>
+                        </ui:repeat>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Количество фильмов по жанрам
+                        <h:commandButton action="${specialFunctionsController.setResultList(2)}" value="Найти"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Фильмы с максимальным рейтингом
+                        <h:commandButton action="${specialFunctionsController.setResultList(3)}" value="Найти"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Для актера
+                        <h:inputText value="${specialFunctionsController.actor4}"/>
+                        вывести фильмы за последние
+                        <h:inputText value="${specialFunctionsController.year4}"/>
+                        лет.
+                        <h:commandButton action="${specialFunctionsController.setResultList(4)}" value="Найти"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Фильм режиссера
+                        <h:inputText value="${specialFunctionsController.director5}"/>
+                        с участием актера
+                        <h:inputText value="${specialFunctionsController.actor5}"/>
+                        <h:commandButton action="${specialFunctionsController.setResultList(5)}" value="Найти"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Фильмы с наградой 
+                        <h:inputText value="${specialFunctionsController.award6}"/>
+                        в году
+                        <h:inputText value="${specialFunctionsController.year6}"/>
+                        <h:commandButton action="${specialFunctionsController.setResultList(6)}" value="Найти"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Страны, в которых в год
+                        <h:inputText value="${specialFunctionsController.year7}"/>
+                        не снимался ни один фильм
+                        <h:commandButton action="${specialFunctionsController.setResultList(7)}" value="Найти"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Фильмы, относяшиеся к нескольким жанрам
+                        <h:commandButton action="${specialFunctionsController.setResultList(8)}" value="Найти"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Фильмы, у которых положительных рецензий больше чем других
+                        <h:commandButton action="${specialFunctionsController.setResultList(9)}" value="Найти"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Герои, которых играл актер
+                        <h:inputText value="${specialFunctionsController.actor10}"/>
+                        в период с года 
+                        <h:inputText value="${specialFunctionsController.fromYear10}"/>
+                        по
+                        <h:inputText value="${specialFunctionsController.toYear10}"/>
+                        <h:commandButton action="${specialFunctionsController.setResultList(10)}" value="Найти"/>
+                    </td>
+                </tr>
+            </table>
+        </h:form>
+        <div class="searchLink">
+            <h:link value="Return to search page" outcome="${searchController.backToSearch()}" />
+        </div>
+    </h:body>
+</html>
+

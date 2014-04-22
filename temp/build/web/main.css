@@ -1,0 +1,82 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Mar 30, 2014, 9:58:16 PM
+    Author     : Yelkin
+*/
+
+body
+{
+    text-align: center;
+    background-color: burlywood;
+    /*    background-image:url('logo.png');
+        background-repeat: no-repeat;
+        background-position: top;*/
+}
+
+
+table
+{
+    margin: auto;
+    border-width: 1px;
+    border-style: outset;
+
+}
+
+td
+{
+    border-style: groove;
+    border-width: 1px;
+}
+
+.tbcell {
+    text-align: center;
+    vertical-align: top;
+    width: 25px;
+}
+
+.tbcell img {
+    width: 10%;
+    height: 100%;
+}
+
+.searchLink {
+    width:100%;
+    padding-top: 25px;
+    bottom:0px;
+}
+
+.loginLink{
+    background-color: antiquewhite;
+    float: right;
+    padding:10px;
+    margin-top: -60px;
+}
+
+.errorValidateMessage{
+    margin-top: 10px;
+    color: red;
+}
+
+.loginForm{
+    left: 50%;
+    width: 220px;
+    position: absolute;
+    margin-left: -110px;
+    background-color: antiquewhite;
+    padding:10px;
+}
+
+.loginTable{
+    margin-bottom: 10px;
+}
+
+
+.actionControls{
+    margin-top: -45px;
+    padding: 10px;
+    background-color: antiquewhite;
+}

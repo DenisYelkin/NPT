@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <c:if test="${param['userId'] != null}">
+            ${userController.setUserById(param['userId'])}
+        </c:if>
+        <title>${userController.user.name}</title>
+        <link rel="stylesheet" type="text/css" href="main.css"/>
+        <link rel="stylesheet" type="text/css" href="user.css"/>
+    </h:head>
+    <h:body>
+        <h:form>
+            <h1>
+                ${userController.user.name}
+            </h1>
+            <ui:include src="/Login.xhtml"/>
+            <div class="container">
+                <c:if test="${userController.currentUsers != null and userController.currentUsers.equals(userController.user)}">
+                    <div class = "actionControls" style="float: right; margin-right: -10px;">
+                        <h:commandButton image="Pencil-icon.png" style="margin-right: 10px;" />
+                        <h:commandButton image="delete-icon.png" action="${userController.delete()}"  onclick="if (!confirm('Really want to do that?'))
+                                    return false"/>
+                    </div>
+                </c:if>
+                <table cellspacing="0" style="margin: auto">
+                    <tr>
+                        <td>
+                            Логин:
+                        </td>
+                        <td>
+                            ${userController.user.login}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Дата рождения:
+                        </td>
+                        <td>
+                            ${userController.user.birthDate}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Дата регистрации:
+                        </td>
+                        <td>
+                            ${userController.user.registrationDate}
+                        </td>
+                    </tr>
+                </table>
+                <br/>
+                <h:commandButton value="Рецензии" action="UserReview" style="margin: auto;"/>
+                <br/>
+                <c:if test="${userController.ratesForUserList != null and userController.ratesForUserList.size() > 0}">
+                    <h3>Оценки</h3>
+                    <table cellspacing="0" cellpadding="0" style="margin-top: -20px; margin: auto;">
+                        <tr>
+                            <td>
+                                Фильм
+                            </td>
+                            <td>
+                                Оценка
+                            </td>
+                        </tr>
+                        <ui:repeat var="rate" value="${userController.ratesForUserList}" varStatus="status">
+                            <tr>
+                                <td>
+                                    <h:link value="${rate.movie.name} (${rate.movie.releaseYear})" outcome="MovieDetails">
+                                        <f:param name="movieId" value="${rate.movie.id}" />                                
+                                    </h:link>
+                                    <br/>
+                                    <div class = "charNames">
+                                        ${rate.movie.rating}
+                                    </div>
+                                </td>
+                                <td>
+                                    ${rate.rating}
+                                </td>
+                            </tr>
+                        </ui:repeat>
+                    </table>
+                </c:if>
+                <div class="searchLink">
+                    <h:link value="Вернуться на страницу поиска" outcome="${searchController.backToSearch()}" />
+                </div>
+            </div>
+        </h:form>
+    </h:body>
+</html>
+

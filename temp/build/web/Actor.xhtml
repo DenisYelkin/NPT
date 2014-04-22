@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <c:if test="${param['actorId'] != null}">
+            ${actorController.setActorById(param['actorId'])}
+        </c:if>
+        <title>${actorController.actor.name}</title>
+        <link rel="stylesheet" type="text/css" href="main.css"/>
+        <link rel="stylesheet" type="text/css" href="peoples.css"/>    
+    </h:head>
+    <h:body>
+        <h:form>
+            <h1>
+                ${actorController.actor.name}
+            </h1>
+            <ui:include src="/Login.xhtml"/>
+            <div class="container">
+                <c:if test="${userController.currentUsers != null}">
+                    <div class = "actionControls" style="float: right; margin-right: -10px;">
+                        <h:commandButton image="Pencil-icon.png" style="margin-right: 10px;" />
+                        <h:commandButton image="delete-icon.png" action="${actorController.delete()}"  onclick="if (! confirm('Really want to do that?')) return false"/>
+                    </div>
+                </c:if>
+                <img class="moviePoster" src="${actorController.actor.photo}"/>
+                <div>
+                    <table class = "movieData" cellspacing="0">
+                        <tr>
+                            <td style = "width: 140px">
+                                Дата рождения:
+                            </td>
+                            <td>
+                                ${actorController.actor.birthDate}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Страна:
+                            </td>
+                            <td>
+                                ${actorController.actor.birthCountry.name}
+                            </td>
+                        </tr>
+                    </table>
+                    <br/>
+                    <table cellspacing="0">
+                        <th>
+                            Фильмы
+                        </th>
+                        <ui:repeat var="item" value="${actorController.movieCharacterList}" varStatus="status">
+                            <tr>
+                                <td>
+                                    <h:link value="${item.movie.name} (${item.movie.releaseYear})" outcome="MovieDetails">
+                                        <f:param name="movieId" value="${item.movie.id}" />                                
+                                    </h:link>           
+                                    <br/>
+                                    <div title = "${item.character.description}" class = "charNames">
+                                        (${item.character.characterName})
+                                    </div>
+                                </td>
+                            </tr>
+                        </ui:repeat>                    
+                    </table>                
+                </div>
+                <div class="searchLink">
+                    <h:link value="Вернуться на страницу поиска" outcome="${searchController.backToSearch()}" />
+                </div>
+            </div>
+        </h:form>
+    </h:body>
+</html>
+
