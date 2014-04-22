@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>${userController.user.name}</title>
+        <link rel="stylesheet" type="text/css" href="main.css"/>
+        <link rel="stylesheet" type="text/css" href="peoples.css"/>
+    </h:head>
+    <h:body>
+        <h:form>
+            <h1>
+                Рецензии пользователя ${userController.user.name}
+            </h1>
+            <ui:include src="/Login.xhtml"/>
+            <div class="container">
+                <c:if test="${userController.user.reviewCollection != null and userController.user.reviewCollection.size() != 0}">
+                    <ui:repeat var="review" value="${userController.user.reviewCollection}" varStatus="status">
+                        <div style="margin-right: -490px;">
+                        <h:link value="Изменить" outcome="ReviewEdit">
+                            <f:param name="reviewId" value="${review.reviewId}" />
+                        </h:link>
+                        <h:commandButton image="Pencil-icon.png" />
+                        </div>
+                        <table cellspacing="0">
+                            <tr>
+                                <td>
+                                    Фильм: 
+                                    <h:link value="${review.movieId.name}" outcome="MovieDetails">
+                                        <f:param name="movieId" value="${review.movieId.id}" />
+                                    </h:link>
+                                </td>
+                                <td>
+                                    ${review.reviewDate}
+                                </td>
+                                <td>
+                                    Характер: ${review.rating}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    ${review.text}
+                                </td> 
+                            </tr>
+                        </table>
+                        <br/>
+                    </ui:repeat>
+                </c:if>
+                <c:if test="${userController.user.reviewCollection == null or userController.user.reviewCollection.size() == 0}">
+                    Здесь пока пусто
+                </c:if>
+                <br/>
+                <h:link value="Вернуться" outcome="User" style="float: none"/>
+                <br/>
+                <div class="searchLink">
+                    <h:link value="Вернуться на страницу поиска" outcome="${searchController.backToSearch()}" />
+                </div>
+            </div>
+        </h:form>
+    </h:body>
+</html>
+

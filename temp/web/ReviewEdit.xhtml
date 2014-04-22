@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <c:if test="${param['reviewId'] != null}">
+            ${reviewController.setReviewById(param['reviewId'])}
+        </c:if>
+        <title>Изменение рецензии</title>
+        <link rel="stylesheet" type="text/css" href="main.css"/>
+        <link rel="stylesheet" type="text/css" href="user.css"/>
+    </h:head>
+    <h:body>
+        <h1>${reviewController.review.movieId.name}</h1>
+        <div class="container">
+            <h:inputTextarea value="${reviewController.review.text}" style="width: 690px; height: 200px;"/>
+            <div>
+                Характер
+            </div>
+            <h:selectOneRadio value="${reviewController.reviewType}" class="searchType">
+                <f:selectItem itemValue="отрицательный" itemLabel="Отрицательный"  />
+                <f:selectItem itemValue="нейтральный" itemLabel="Нейтральный" />
+                <f:selectItem itemValue="положительный" itemLabel="Положительный" />
+            </h:selectOneRadio>
+            <h:commandButton value="Сохранить" action="${reviewController.save()}" />
+        </div>
+    </h:body>
+</html>
+

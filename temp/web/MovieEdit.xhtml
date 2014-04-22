@@ -1,0 +1,237 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title> ${movieController.movie.name}</title>
+        <link rel="stylesheet" type="text/css" href="main.css"/>
+        <link rel="stylesheet" type="text/css" href="movieEdit.css"/>
+    </h:head>
+    <h:body>
+        <h:form>
+            <div class="container">
+                <c:if test="${userController.currentUsers != null}">
+                    <div class = "actionControls" style="float: right; margin-right: -10px;">
+                        <h:commandButton image="delete-icon.png" action="${movieController.delete()}" onclick="if (!confirm('Really want to do that?'))
+                                    return false"/>
+                    </div>
+                </c:if>
+                <div>
+                    <table class = "movieData" cellspacing="0">
+                        <tr>
+                            <td style = "width: 180px">
+                                Название:
+                            </td>
+                            <td>
+                                <h:inputText value="${movieController.movieName}"/>
+                                <c:if test="${!movieController.movieNameCorrect}">
+                                    <div class = "errorValidateMessage">
+                                        Введено некорректное название
+                                    </div>
+                                </c:if>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Дата выхода:
+                            </td>
+                            <td>
+                                <c:if test="${!movieController.dateCorrect}">
+                                    <div class = "errorValidateMessage">
+                                        Введена некорректная дата выхода
+                                    </div>
+                                </c:if>
+                                <h:inputText value="${movieController.date}" style="text-align: center;
+                                             width: 80px;"/>
+                                <br/>
+                                <div class = "charNames">
+                                    Дату необходимо ввести
+                                    <br/>
+                                    в формате: DD-MM-YYYY
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Постер:
+                            </td>
+                            <td>
+                                <c:if test="${!movieController.posterCorrect}">
+                                    <div class = "errorValidateMessage">
+                                        Введена некорректная ссылка
+                                    </div>
+                                </c:if>
+                                <h:inputText value="${movieController.poster}" style="width: 295px;"/>
+                                <br/>
+                                <div class = "charNames">
+                                    Необходимо ввести ссылку на изображение
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Страна:
+                            </td>
+                            <td>
+                                <ui:repeat var="country" value="${movieController.unsavedCounties}" varStatus="status">
+                                    ${country.name} <h:commandButton action="${movieController.removeCountryForMovie(country)}" image="delete-icon.png" />
+                                    <br/>
+                                </ui:repeat>
+                                <c:if test="${movieController.countryMap != null and movieController.countryMap.size() != 0}">
+                                    <h:selectOneMenu value="${movieController.selectedCountry}" converter="#{countryConverterBean}">
+                                        <f:selectItems value="${movieController.countryMap}"/>
+                                    </h:selectOneMenu>
+                                    <h:commandButton value="Add" action="${movieController.addCountryForMovie()}" />
+                                </c:if>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Режиссер:
+                            </td>
+                            <td>
+                                <ui:repeat var="director" value="${movieController.unsavedDirectors}" varStatus="status">
+                                    ${director.name} <h:commandButton action="${movieController.removeDirectorForMovie(director)}" image="delete-icon.png" />
+                                    <br/>
+                                </ui:repeat>
+                                <c:if test="${movieController.directorMap != null and movieController.directorMap.size() != 0}">
+                                    <h:selectOneMenu value="${movieController.selectedDirector}" converter="#{directorConverterBean}">
+                                        <f:selectItems value="${movieController.directorMap}"/>
+                                    </h:selectOneMenu>
+                                    <h:commandButton value="Add" action="${movieController.addDirectorForMovie()}" />
+                                </c:if>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Актеры:
+                            </td>
+                            <td>
+                                <ui:repeat var="character" value="${movieController.unsavedCharacters}" varStatus="status">
+                                    <div title="${character.description}">
+                                        ${character.actor.name} - ${character.characterName} <h:commandButton action="${movieController.removeCharacterForMovie(character)}" image="delete-icon.png" />
+                                    </div>                                    
+                                </ui:repeat>
+                                <c:if test="${movieController.characterMap != null and movieController.characterMap.size() != 0}">
+                                    <h:selectOneMenu value="${movieController.selectedCharacter}" converter="#{characterConverterBean}">
+                                        <f:selectItems value="${movieController.characterMap}"/>
+                                    </h:selectOneMenu>
+                                    <h:commandButton value="Add" action="${movieController.addCharacterForMovie()}" />
+                                    <br/>
+                                    Имя героя:
+                                    <h:inputText value="${movieController.characterName}"/>
+                                    <c:if test="${!movieController.characterNameCorrect}">
+                                        <div class = "errorValidateMessage">
+                                            Введено некорректное имя героя
+                                        </div>
+                                    </c:if>
+                                    <h:inputTextarea value="${movieController.characterDescription}" />
+                                </c:if>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Жанр:
+                            </td>
+                            <td>
+                                <ui:repeat var="genre" value="${movieController.unsavedGenres}" varStatus="status">
+                                    ${genre.name} <h:commandButton action="${movieController.removeGenreForMovie(genre)}" image="delete-icon.png" />
+                                    <br/>
+                                </ui:repeat>
+                                <c:if test="${movieController.genreMap != null and movieController.genreMap.size() != 0}">
+                                    <h:selectOneMenu value="${movieController.selectedGenre}" converter="#{genreConverterBean}">
+                                        <f:selectItems value="${movieController.genreMap}"/>
+                                    </h:selectOneMenu>
+                                    <h:commandButton value="Add" action="${movieController.addGenreForMovie()}" />
+                                </c:if>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Бюджет:
+                            </td>
+                            <td>
+                                $<h:inputText value="${movieController.budget}"/>
+                                <c:if test="${!movieController.budgetCorrect}">
+                                    <div class = "errorValidateMessage">
+                                        Введено некорректное значение бюджета
+                                    </div>
+                                </c:if>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Возраст:
+                            </td>
+                            <td>
+                                <h:inputText value="${movieController.restriction}" style="width: 30px;
+                                             text-align: center;"/>+
+                                <c:if test="${!movieController.restrictionCorrect}">
+                                    <div class = "errorValidateMessage">
+                                        Введено некорректное ограничение по возрасту
+                                    </div>
+                                </c:if>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Продолжительность:
+                            </td>
+                            <td>
+                                <h:inputText value="${movieController.duration}" style="width: 30px;
+                                             text-align: center;"/> мин.
+                                <c:if test="${!movieController.durationCorrect}">
+                                    <div class = "errorValidateMessage">
+                                        Введена некорректная продолжительность фильма
+                                    </div>
+                                </c:if>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Награды:
+                            </td>
+                            <td>
+                                <ui:repeat var="movieNomination" value="${movieController.unsavedNomination}" varStatus="status">
+                                    <div class="${status.index != movieController.unsavedNomination.size() - 1 ? 'nominationRow' : ''}">
+                                        <div title="${movieNomination.nomination.awardId.location}">
+                                            ${movieNomination.nomination.awardId.name} (${movieNomination.nomination.awardId.year}) <h:commandButton action="${movieController.removeNominationForMovie(movieNomination)}" image="delete-icon.png" />
+                                        </div>
+                                        ${movieNomination.nomination.name} (${movieNomination.status})
+                                    </div>
+                                </ui:repeat>
+                                <c:if test="${movieController.nominationMap != null and movieController.nominationMap.size() != 0}">
+                                    <h:selectOneMenu value="${movieController.selectedNomination}" converter="#{nominationConverterBean}">
+                                        <f:selectItems value="${movieController.nominationMap}"/>
+                                    </h:selectOneMenu>
+                                </c:if>
+                                <h:selectOneRadio value="${movieController.nominationStatus}" class="nominationStatus">
+                                    <f:selectItem itemValue="лауреат" itemLabel="Лауреат"  />
+                                    <f:selectItem itemValue="номинант" itemLabel="Номинант" />
+                                </h:selectOneRadio>
+                                <h:commandButton value="Add" action="${movieController.addNominationForMovie()}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Описание:
+                            </td>
+                            <td>
+                                <h:inputTextarea value="${movieController.movie.description}" style="height: 150px;" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <h:commandButton value="Сохранить" action="${movieController.save()}" />
+                <h:commandButton value="Отменить" action="${movieController.cancel()}" />
+                <div class="searchLink">
+                    <h:link value="Вернуться на страницу поиска" outcome="${searchController.backToSearch()}" />
+                </div>
+            </div>
+        </h:form>
+    </h:body>
+</html>
+

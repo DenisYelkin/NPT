@@ -1,0 +1,33 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <c:if test="${userController.currentUsers == null}">
+        <div class = "loginLink">
+            <c:if test="${!userController.isLastLoginSuccessful}">
+                <div class = "errorValidateMessage">
+                    Неверный логин или пароль
+                </div>
+            </c:if>
+            Логин:
+            <h:inputText value="${userController.login}" style="margin-left: 7px;"/>
+            <br/>
+            Пароль:
+            <h:inputSecret value="${userController.password}" />
+            <br/>
+            <h:commandButton value="Войти" action="${userController.validate()}" />
+            <h:commandButton value="Регистрация" action="UserCreate" /> 
+        </div>
+    </c:if>
+    <c:if test="${userController.currentUsers != null}">
+        <div class = "loginLink">
+            <h:link value="${userController.currentUsers.name}" outcome="User" >
+                <f:param  name="userId" value="${userController.currentUsers.id}" />
+            </h:link>
+            <br/>
+            <h:commandLink value="Выйти" action="${userController.logout()}" />
+        </div>
+    </c:if>
+</ui:composition>

@@ -1,0 +1,218 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <c:if test="${param['movieId'] != null}">
+            ${movieController.setMovieById(param['movieId'])}
+        </c:if>
+        <title> ${movieController.movie.name}</title>
+        <link rel="stylesheet" type="text/css" href="main.css"/>
+        <link rel="stylesheet" type="text/css" href="movie.css"/>
+    </h:head>
+    <h:body>
+        <h:form>
+            <h1>
+                ${movieController.movie.name}
+            </h1>
+            <ui:include src="/Login.xhtml"/>
+            <div class="container">
+                <c:if test="${userController.currentUsers != null}">
+                    <div class = "actionControls" style="float: right; margin-right: -10px;">
+                        <h:commandButton image="Pencil-icon.png" action ="MovieEdit" style="margin-right: 10px;" />
+                        <h:commandButton image="delete-icon.png" action="${movieController.delete()}" onclick="if (!confirm('Really want to do that?'))
+                                    return false"/>
+                    </div>
+                </c:if>
+                <img class="moviePoster" src="${movieController.movie.poster}"/>
+                <div>
+                    <table class = "movieData" cellspacing="0">
+                        <tr>
+                            <td style = "width: 180px">
+                                Дата выхода:
+                            </td>
+                            <td>
+                                ${movieController.movie.releaseDate}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Страна:
+                            </td>
+                            <td>
+                                <ui:repeat var="country" value="${movieController.movie.countryCollection}" varStatus="status">
+                                    ${country.name}, 
+                                </ui:repeat>
+                                ...
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Режиссер:
+                            </td>
+                            <td>
+                                <ui:repeat var="director" value="${movieController.movie.directorCollection}" varStatus="status">
+                                    <h:link value="${director.name}" outcome="Director">
+                                        <f:param name="directorId" value="${director.id}" />
+                                    </h:link>, 
+                                </ui:repeat>
+                                ...
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Актеры:
+                            </td>
+                            <td>
+                                <ui:repeat var="actor" value="${movieController.actorList}" varStatus="status">
+                                    <h:link value="${actor.name}" outcome="Actor">
+                                        <f:param name="actorId" value="${actor.id}" />
+                                    </h:link>, 
+                                </ui:repeat>
+                                ...
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Жанр:
+                            </td>
+                            <td>
+                                <ui:repeat var="genre" value="${movieController.movie.genreCollection}" varStatus="status">
+                                    ${genre.name}, 
+                                </ui:repeat>
+                                ...
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Бюджет:
+                            </td>
+                            <td>
+                                ${movieController.richBudget}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Возраст:
+                            </td>
+                            <td>
+                                ${movieController.movie.restriction}+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Продолжительность:
+                            </td>
+                            <td>
+                                ${movieController.movie.duration} мин.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Награды:
+                            </td>
+                            <td>
+                                <ui:repeat var="movieNomination" value="${movieController.movieNominationList}" varStatus="status">
+                                    <div class="${status.index != movieController.movieNominationList.size() -1 ? 'nominationRow' : ''}">
+                                        <div title="${movieNomination.nomination.awardId.location}">
+                                            ${movieNomination.nomination.awardId.name} (${movieNomination.nomination.awardId.year})
+                                        </div>
+                                        ${movieNomination.nomination.name} (${movieNomination.status})
+                                    </div>
+                                </ui:repeat>
+                            </td>
+                        </tr>
+                        <tr class = "ratingRow">
+                            <td>
+                                Рейтинг:
+                            </td>
+                            <td>
+                                ${movieController.movie.rating}
+                            </td>
+                        </tr>
+                        <c:if test="${userController.currentUsers != null}">
+                            <tr>
+                                <td>
+                                    Моя оценка 
+                                </td>
+                                <td>
+                                    ${movieController.getRateForCurrentUser(userController.currentUsers)}
+                                    <br/>
+                                    <div class="search">
+                                        <h:selectOneRadio value="${movieController.userRating}" class="searchType">
+                                            <f:selectItem itemValue="1" itemLabel="1"/>
+                                            <f:selectItem itemValue="2" itemLabel="2" />
+                                            <f:selectItem itemValue="3" itemLabel="3" />
+                                            <f:selectItem itemValue="4" itemLabel="4" />
+                                            <f:selectItem itemValue="5" itemLabel="5" />
+                                            <f:selectItem itemValue="6" itemLabel="6" />
+                                            <f:selectItem itemValue="7" itemLabel="7" />
+                                            <f:selectItem itemValue="8" itemLabel="8" />
+                                            <f:selectItem itemValue="9" itemLabel="9" />
+                                            <f:selectItem itemValue="10" itemLabel="10" />
+                                        </h:selectOneRadio>
+                                    </div>
+                                    <h:commandButton action="${movieController.updateRating(userController.currentUsers)}" value = "Заценить">
+                                    </h:commandButton>
+                                </td>
+                            </tr>
+                        </c:if>
+                    </table>
+                </div>
+                <div class = "movieDescription" >
+                    <h3>Описание:</h3>
+                    ${movieController.movie.description}
+                </div>
+                <c:if test="${(movieController.movie.reviewCollection != null) &amp;&amp; (movieController.movie.reviewCollection.size() != 0)}">
+                    <div class="movieDescription">
+                        <h3>Рецензии</h3>
+                        <ui:repeat var="review" value="${movieController.movie.reviewCollection}" varStatus="status">
+                            <table cellspacing="0">
+                                <tr>
+                                    <td>
+                                        Пользователь: 
+                                        <h:link value="${review.userId.name}" outcome="User">
+                                            <f:param  name="userId" value="${review.userId.id}" />
+                                        </h:link>
+                                    </td>
+                                    <td>
+                                        ${review.reviewDate}
+                                    </td>
+                                    <td>
+                                        Характер: ${review.rating}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">
+                                        ${review.text}
+                                    </td> 
+                                </tr>
+                            </table>
+                            <br/>
+                        </ui:repeat>
+                    </div>
+                </c:if>
+                <c:if test="${userController.currentUsers != null and !movieController.isReviewExistForUser(userController.currentUsers)}">
+                    <h3>Написать рецензию</h3>
+                    <h:inputTextarea value="${movieController.reviewText}" style="width: 690px; height: 200px;"/>
+                    <div>
+                        Характер
+                    </div>
+                    <h:selectOneRadio value="${movieController.reviewType}" class="searchType">
+                        <f:selectItem itemValue="отрицательный" itemLabel="Отрицательный"  />
+                        <f:selectItem itemValue="нейтральный" itemLabel="Нейтральный" />
+                        <f:selectItem itemValue="положительный" itemLabel="Положительный" />
+                    </h:selectOneRadio>
+                    <h:commandButton value="Сохранить" action="${movieController.saveReview(userController.currentUsers)}" />
+                </c:if>
+                <div class="searchLink">
+                    <h:link value="Вернуться на страницу поиска" outcome="${searchController.backToSearch()}" />
+                </div>
+            </div>
+        </h:form>
+    </h:body>
+</html>
+

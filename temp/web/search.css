@@ -1,0 +1,136 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Mar 30, 2014, 9:56:24 PM
+    Author     : Yelkin
+*/
+
+.search{
+    margin-bottom: 10px;
+}
+
+.charNames{
+    font-size: 12px;
+    font-style: italic;
+}
+
+.container {
+    left: 50%;
+    width: 525px;
+    position: absolute;
+    margin-left: -262px;
+    background-color: antiquewhite;
+    padding:10px;
+}
+
+/* this is called a clearfix. it makes sure that the container's children floats are cleared, without using extra markup */
+
+.container:before,
+.container:after {
+    content: " ";
+    display: table;
+}
+
+.container:after {
+    clear: both;
+}
+
+
+.movieData{
+    width: 300px;
+    word-break: break-all;
+    font-size: 18px;
+}
+/* end clearfix*/
+
+.moviePoster{
+    width:200px;
+}
+
+.movieDescription{    
+    border-top: black;
+    border-top-width: 1px;
+    border-top-style: solid;
+    margin-top: 5px;
+}
+
+.ratingRow{
+    font-style: oblique;
+    font-size: 24px;
+}
+
+.searchType {
+    border-width: 0px;
+    border: antiquewhite;
+    border-style: none;
+    margin-left: 50px;
+}
+
+body
+{
+    text-align: center;
+    background-color: burlywood;
+    /*    background-image:url('logo.png');
+        background-repeat: no-repeat;
+        background-position: top;*/
+}
+
+
+table.searchResult
+{
+    margin: auto;
+    border-width: 1px;
+    border-style: outset;
+
+}
+
+td.searchResult
+{
+    border-style: groove;
+    border-width: 1px;
+}
+
+.tbcell {
+    text-align: center;
+    vertical-align: top;
+    width: 25px;
+}
+
+.tbcell img {
+    width: 10%;
+    height: 100%;
+}
+
+.searchLink {
+    width:100%;
+    padding-top: 25px;
+    bottom:0px;
+}
+
+.loginLink{
+    background-color: antiquewhite;
+    float: right;
+    padding:10px;
+    margin-top: -60px;
+}
+
+.errorValidateMessage{
+    margin-top: 10px;
+    color: red;
+}
+
+.loginForm{
+    left: 50%;
+    width: 220px;
+    position: absolute;
+    margin-left: -110px;
+    background-color: antiquewhite;
+    padding:10px;
+}
+
+.loginTable{
+    margin-bottom: 10px;
+}
