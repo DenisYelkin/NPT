@@ -112,6 +112,16 @@ public class Users implements Serializable {
         date.setTime(birthDate);
         return DateFormatter.getRichDate(date);
     }
+    
+     public String getFormattedBirthDate() {
+        Calendar date = Calendar.getInstance();
+        date.setTime(birthDate);
+        return DateFormatter.getFormattedDate(date);
+    }
+
+    public void setFormattedBirthDate(String formattedBirthDate) {
+        this.birthDate = DateFormatter.setFormattedDate(formattedBirthDate);
+    }
 
     public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;

@@ -18,7 +18,7 @@
             <h:inputSecret value="${userController.password}" />
             <br/>
             <h:commandButton value="Войти" action="${userController.validate()}" />
-            <h:commandButton value="Регистрация" action="UserCreate" /> 
+            <h:commandButton value="Регистрация" action="${userController.editUser(true)}" /> 
         </div>
     </c:if>
     <c:if test="${userController.currentUsers != null}">

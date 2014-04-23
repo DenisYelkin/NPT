@@ -51,7 +51,6 @@ public class Review implements Serializable {
     @Column(name = "REVIEW_ID")
     private BigDecimal reviewId;
     @Lob
-    @Size(max = 0)
     private String text;
     @Column(name = "REVIEW_DATE")
     @Temporal(TemporalType.TIMESTAMP)

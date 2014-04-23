@@ -19,13 +19,11 @@
             <div class="container">
                 <c:if test="${userController.user.reviewCollection != null and userController.user.reviewCollection.size() != 0}">
                     <ui:repeat var="review" value="${userController.user.reviewCollection}" varStatus="status">
-                        <div style="margin-right: -490px;">
-                        <h:link value="Изменить" outcome="ReviewEdit">
-                            <f:param name="reviewId" value="${review.reviewId}" />
-                        </h:link>
-                        <h:commandButton image="Pencil-icon.png" />
+                        <div style="margin-right: -390px;">
+                            <h:commandButton value="Изменить" action="${userController.editReview(review)}"/>
+                            <h:commandButton value="Удалить" action="${userController.removeReview(review)}" />
                         </div>
-                        <table cellspacing="0">
+                        <table cellspacing="0" style="width: 530px;">
                             <tr>
                                 <td>
                                     Фильм: 

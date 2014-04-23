@@ -6,6 +6,7 @@
 
 package session;
 
+import entities.Movie;
 import java.util.List;
 import javax.persistence.Cache;
 import javax.persistence.EntityManager;
@@ -42,6 +43,8 @@ public abstract class AbstractFacade<T> {
     }
 
     public T find(Object id) {
+        Cache cache = getEntityManager().getEntityManagerFactory().getCache();
+        cache.evict(entityClass);
         return getEntityManager().find(entityClass, id);
     }
 

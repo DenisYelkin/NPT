@@ -6,12 +6,15 @@
 package managedBeans;
 
 import entities.Rate;
+import entities.Review;
 import entities.Users;
 import java.math.BigDecimal;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import session.ReviewFacade;
 import session.UsersFacade;
 
 /**
@@ -24,6 +27,9 @@ public class UserController {
 
     @EJB
     private UsersFacade usersFacade;
+
+    @EJB
+    private ReviewFacade reviewFacade;
 
     private Users currentUsers;
     private Users user;
@@ -97,12 +103,36 @@ public class UserController {
         currentUsers = null;
         return null;
     }
-    
-    public String delete()
-    {
+
+    public String delete() {
         usersFacade.remove(user);
         this.currentUsers = null;
         this.user = null;
         return "index";
+    }
+
+    public String removeReview(Review review) {
+        reviewFacade.remove(review);
+        currentUsers = review.getUserId();
+        setUserById(review.getUserId().getId());
+        return null;
+    }
+
+    public String editReview(Review review) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        ReviewController bean = (ReviewController) context.getApplication().evaluateExpressionGet(context, "#{reviewController}", ReviewController.class);
+        bean.setReviewById(review.getReviewId());
+        return "ReviewEdit";
+    }
+
+    public String editUser(boolean isNewUser) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        UserCreateController bean = (UserCreateController) context.getApplication().evaluateExpressionGet(context, "#{userCreateController}", UserCreateController.class);
+        if (isNewUser) {
+            bean.createNewUser(null);
+        } else {
+            bean.createNewUser(currentUsers);
+        }
+        return "UserCreate";
     }
 }

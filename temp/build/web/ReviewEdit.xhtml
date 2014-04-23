@@ -5,27 +5,27 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
-        <c:if test="${param['reviewId'] != null}">
-            ${reviewController.setReviewById(param['reviewId'])}
-        </c:if>
         <title>Изменение рецензии</title>
         <link rel="stylesheet" type="text/css" href="main.css"/>
         <link rel="stylesheet" type="text/css" href="user.css"/>
+        <link rel="stylesheet" type="text/css" href="review.css"/>
     </h:head>
     <h:body>
-        <h1>${reviewController.review.movieId.name}</h1>
-        <div class="container">
-            <h:inputTextarea value="${reviewController.review.text}" style="width: 690px; height: 200px;"/>
-            <div>
-                Характер
+        <h:form>
+            <h1>${reviewController.review.movieId.name}</h1>
+            <div class="container">
+                <h:inputTextarea value="${reviewController.review.text}" style="width: 690px; height: 200px;"/>
+                <div>
+                    Характер
+                </div>
+                <h:selectOneRadio value="${reviewController.reviewType}" class="reviewType">
+                    <f:selectItem itemValue="отрицательный" itemLabel="Отрицательный"  />
+                    <f:selectItem itemValue="нейтральный" itemLabel="Нейтральный" />
+                    <f:selectItem itemValue="положительный" itemLabel="Положительный" />
+                </h:selectOneRadio>
+                <h:commandButton value="Сохранить" action="${reviewController.save()}" />
             </div>
-            <h:selectOneRadio value="${reviewController.reviewType}" class="searchType">
-                <f:selectItem itemValue="отрицательный" itemLabel="Отрицательный"  />
-                <f:selectItem itemValue="нейтральный" itemLabel="Нейтральный" />
-                <f:selectItem itemValue="положительный" itemLabel="Положительный" />
-            </h:selectOneRadio>
-            <h:commandButton value="Сохранить" action="${reviewController.save()}" />
-        </div>
+        </h:form>
     </h:body>
 </html>
 

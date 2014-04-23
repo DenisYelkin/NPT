@@ -2,16 +2,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
-    <h:head>
-        ${userCreateController.createNewUser()}
-        <title>Регистрация</title>
+    <h:head>        
+        <title>${userCreateController.title}</title>
         <link rel="stylesheet" type="text/css" href="main.css"/>
         <link rel="stylesheet" type="text/css" href="user.css"/>
     </h:head>
     <h:body>
-        <h1>Регистрация</h1>
+        <h1>${userCreateController.title}</h1>
         <h:form>
             <div class="container">
                 <c:if test="${!userCreateController.isRegistrationDataCorrect}">

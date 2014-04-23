@@ -52,13 +52,6 @@ public class MovieFacade extends AbstractFacade<Movie> {
         super.remove(movie);
     }
     
-    @Override
-    public Movie find(Object id) {
-        Cache cache = getEntityManager().getEntityManagerFactory().getCache();
-        cache.evict(Movie.class);
-        return super.find(id);
-    }
-    
     public Rate getMovieRateForUser(Users user, Movie movie) {
         List result = em.createNamedQuery("Rate.findByMovieAndUser").setParameter("movie", movie.getId()).setParameter("user", user.getId()).getResultList();
         if (result == null || result.isEmpty()) {

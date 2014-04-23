@@ -12,6 +12,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import session.UsersFacade;
+import utils.DateFormatter;
 
 /**
  *
@@ -23,50 +24,57 @@ public class UserCreateController {
 
     private Users user;
 
-    
     private String birthDate;
     private String login;
     private String password;
-
+    private String title;
+    private boolean isCreate;
     @EJB
     private UsersFacade usersFacade;
 
     private boolean isRegistrationDataCorrect = true;
 
-    public void createNewUser() {
-        user = new Users();
+    public void createNewUser(Users user) {
+        if (user == null) {
+            this.user = new Users();
+            title = "Регистрация";
+            isCreate = true;
+        } else {
+            this.user = user;
+            login = user.getLogin();
+            password = user.getPassword();
+            birthDate = user.getFormattedBirthDate();
+            title = "Редактирование";
+            isCreate = false;
+        }
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public String validate() {
-        if (birthDate == null || user.getName() == null || password == null || login == null
+        Date formattedDate = DateFormatter.setFormattedDate(birthDate);
+        if (birthDate == null || formattedDate == null || user.getName() == null || password == null || login == null
                 || password.length() < 1 || password.length() > 100
                 || login.length() < 1 || login.length() > 100) {
             isRegistrationDataCorrect = false;
             return null;
         }
-        String[] parseDate = birthDate.split("-");
-        if (parseDate.length != 3) {
-            isRegistrationDataCorrect = false;
-            return null;
-        }
-        try {
-            int day = Integer.parseInt(parseDate[0]);
-            int month = Integer.parseInt(parseDate[1]);
-            int year = Integer.parseInt(parseDate[2]);
-            user.setBirthDate(new Date(year + 1900, month - 1, day));
-            user.setPassword(password);
-            user.setLogin(login);
+        user.setBirthDate(formattedDate);
+        user.setPassword(password);
+        user.setLogin(login);
+        if (isCreate) {
             usersFacade.create(user);
-            isRegistrationDataCorrect = true;
-            FacesContext context = FacesContext.getCurrentInstance();
-            UserController bean = (UserController) context.getApplication().evaluateExpressionGet(context, "#{userController}", UserController.class);
-            bean.setUserById(user.getId());
-            bean.setCurrentUsers(user);
-            return "User";
-        } catch (NumberFormatException e) {
-            isRegistrationDataCorrect = false;
-            return null;
+        } else {
+            usersFacade.edit(user);
         }
+        isRegistrationDataCorrect = true;
+        FacesContext context = FacesContext.getCurrentInstance();
+        UserController bean = (UserController) context.getApplication().evaluateExpressionGet(context, "#{userController}", UserController.class);
+        bean.setUserById(user.getId());
+        bean.setCurrentUsers(user);
+        return "User";
     }
 
     public Users getUser() {
@@ -80,7 +88,7 @@ public class UserCreateController {
     public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
     }
-    
+
     public String getBirthDate() {
         return birthDate;
     }
