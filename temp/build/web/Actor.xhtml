@@ -22,7 +22,7 @@
             <div class="container">
                 <c:if test="${userController.currentUsers != null}">
                     <div class = "actionControls" style="float: right; margin-right: -10px;">
-                        <h:commandButton image="Pencil-icon.png" style="margin-right: 10px;" />
+                        <h:commandButton image="Pencil-icon.png" action="ActorEdit" style="margin-right: 10px;" />
                         <h:commandButton image="delete-icon.png" action="${actorController.delete()}"  onclick="if (! confirm('Really want to do that?')) return false"/>
                     </div>
                 </c:if>

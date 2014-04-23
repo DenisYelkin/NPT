@@ -100,6 +100,16 @@ public class Actor implements Serializable {
         this.birthDate = birthDate;
     }
 
+    public String getFormattedBirthDate() {
+        Calendar date = Calendar.getInstance();
+        date.setTime(birthDate);
+        return DateFormatter.getFormattedDate(date);
+    }
+
+    public void setFormattedBirthDate(String formattedBirthDate) {
+        this.birthDate = DateFormatter.setFormattedDate(formattedBirthDate);
+    }
+    
     public String getPhoto() {
         return photo;
     }

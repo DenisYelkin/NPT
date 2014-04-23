@@ -488,7 +488,6 @@ public class MovieController {
             return;
         }
         movie.setReleaseDate(movieDate);
-        System.out.println("MOVIEDATE = " + movieDate);
         dateCorrect = true;
     }
 

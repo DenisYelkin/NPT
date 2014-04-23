@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>${actorController.actor.name}</title>
+        <link rel="stylesheet" type="text/css" href="main.css"/>
+        <link rel="stylesheet" type="text/css" href="peoples.css"/>    
+    </h:head>
+    <h:body>
+        <h:form>
+            <h1>
+                ${actorController.actor.name}
+            </h1>
+            <div class="container">
+                <div class = "actionControls" style="float: right; margin-right: -10px;">
+                    <h:commandButton image="delete-icon.png" action="${actorController.delete()}"  onclick="if (!confirm('Really want to do that?'))
+                                    return false"/>
+                </div>
+                <div>
+                    <table class = "movieData" cellspacing="0" style="width: 530px;">
+                        <tr>
+                            <td style = "width: 140px">
+                                Имя:
+                            </td>
+                            <td>
+                                <h:inputText value="${actorController.name}" />
+                                <c:if test="${!actorController.nameCorrect}">
+                                    <div class = "errorValidateMessage">
+                                        Введено некорректное имя актера
+                                    </div>
+                                </c:if>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Фото:
+                            </td>
+                            <td>
+                                <h:inputText value="${actorController.photo}" />
+                                <c:if test="${!actorController.photoCorrect}">
+                                    <div class = "errorValidateMessage">
+                                        Введена некорректная ссылка на фотографию
+                                    </div>
+                                </c:if>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Дата рождения:
+                            </td>
+                            <td>
+                                <h:inputText value="${actorController.birthDate}" />
+                                <c:if test="${!actorController.birthDateCorrect}">
+                                    <div class = "errorValidateMessage">
+                                        Введена некорректная дата рожденияы
+                                    </div>
+                                </c:if>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Страна:
+                            </td>
+                            <td>
+                                <c:if test="${actorController.countryMap != null and actorController.countryMap.size() != 0}">
+                                    <h:selectOneMenu value="${actorController.actor.birthCountry}" converter="#{countryConverterBean}">
+                                        <f:selectItems value="${actorController.countryMap}"/>
+                                    </h:selectOneMenu>
+                                </c:if>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <h:commandButton value="Сохранить" action="${actorController.save()}" />
+                <h:commandButton value="Отменить" action="${actorController.cancel()}" />
+                <div class="searchLink">
+                    <h:link value="Вернуться на страницу поиска" outcome="${searchController.backToSearch()}" />
+                </div>
+            </div>
+        </h:form>
+    </h:body>
+</html>
+
