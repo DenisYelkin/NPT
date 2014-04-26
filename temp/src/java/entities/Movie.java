@@ -125,9 +125,13 @@ public class Movie implements Serializable {
     }
 
     public String getFormattedReleaseDate() {
-        Calendar date = Calendar.getInstance();
-        date.setTime(releaseDate);
-        return DateFormatter.getFormattedDate(date);
+        if (releaseDate == null) {
+            return "";
+        } else {
+            Calendar date = Calendar.getInstance();
+            date.setTime(releaseDate);
+            return DateFormatter.getFormattedDate(date);
+        }
     }
 
     public void setFormattedReleaseDate(String formattedReleaseDate) {

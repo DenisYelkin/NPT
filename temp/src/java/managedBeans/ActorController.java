@@ -66,8 +66,6 @@ public class ActorController {
         return "index";
     }
     
-    
-    
     public String save() {
         if (!nameCorrect || !photoCorrect || !birthDateCorrect) {
             return null;

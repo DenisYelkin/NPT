@@ -5,18 +5,18 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
-        <title>${actorController.actor.name}</title>
+        <title>${directorController.director.name}</title>
         <link rel="stylesheet" type="text/css" href="main.css"/>
         <link rel="stylesheet" type="text/css" href="peoples.css"/>    
     </h:head>
     <h:body>
         <h:form>
             <h1>
-                ${actorController.actor.name}
+                ${directorController.director.name}
             </h1>
             <div class="container">
                 <div class = "actionControls" style="float: right; margin-right: -10px;">
-                    <h:commandButton image="delete-icon.png" action="${actorController.delete()}"  onclick="if (!confirm('Really want to do that?'))
+                    <h:commandButton image="delete-icon.png" action="${directorController.delete()}"  onclick="if (!confirm('Really want to do that?'))
                                     return false"/>
                 </div>
                 <div>
@@ -26,8 +26,8 @@
                                 Имя:
                             </td>
                             <td>
-                                <h:inputText value="${actorController.name}" />
-                                <c:if test="${!actorController.nameCorrect}">
+                                <h:inputText value="${directorController.name}" />
+                                <c:if test="${!directorController.nameCorrect}">
                                     <div class = "errorValidateMessage">
                                         Введено некорректное имя актера
                                     </div>
@@ -39,8 +39,8 @@
                                 Фото:
                             </td>
                             <td>
-                                <h:inputText value="${actorController.photo}" />
-                                <c:if test="${!actorController.photoCorrect}">
+                                <h:inputText value="${directorController.photo}" />
+                                <c:if test="${!directorController.photoCorrect}">
                                     <div class = "errorValidateMessage">
                                         Введена некорректная ссылка на фотографию
                                     </div>
@@ -52,8 +52,8 @@
                                 Дата рождения:
                             </td>
                             <td>
-                                <h:inputText value="${actorController.birthDate}" />
-                                <c:if test="${!actorController.birthDateCorrect}">
+                                <h:inputText value="${directorController.birthDate}" />
+                                <c:if test="${!directorController.birthDateCorrect}">
                                     <div class = "errorValidateMessage">
                                         Введена некорректная дата рождения
                                     </div>
@@ -65,17 +65,17 @@
                                 Страна:
                             </td>
                             <td>
-                                <c:if test="${actorController.countryMap != null and actorController.countryMap.size() != 0}">
-                                    <h:selectOneMenu value="${actorController.actor.birthCountry}" converter="#{countryConverterBean}">
-                                        <f:selectItems value="${actorController.countryMap}"/>
+                                <c:if test="${directorController.countryMap != null and directorController.countryMap.size() != 0}">
+                                    <h:selectOneMenu value="${directorController.director.birthCountry}" converter="#{countryConverterBean}">
+                                        <f:selectItems value="${directorController.countryMap}"/>
                                     </h:selectOneMenu>
                                 </c:if>
                             </td>
                         </tr>
                     </table>
                 </div>
-                <h:commandButton value="Сохранить" action="${actorController.save()}" />
-                <h:commandButton value="Отменить" action="${actorController.cancel()}" />
+                <h:commandButton value="Сохранить" action="${directorController.save()}" />
+                <h:commandButton value="Отменить" action="${directorController.cancel()}" />
                 <div class="searchLink">
                     <h:link value="Вернуться на страницу поиска" outcome="${searchController.backToSearch()}" />
                 </div>

@@ -111,6 +111,9 @@ public class MovieController {
     private boolean budgetCorrect = true;
     private boolean restrictionCorrect = true;
     private boolean durationCorrect = true;
+    private boolean dataCorrect = true;
+
+    private boolean movieCreate;
 
     private String reviewText;
     private String reviewType = "положительный";
@@ -131,21 +134,26 @@ public class MovieController {
         this.movie = movie;
     }
 
+    private void setup() {
+        unsavedCounties = new LinkedList<>();
+        unsavedDirectors = new LinkedList<>();
+        unsavedGenres = new LinkedList<>();
+        unsavedCharacters = new LinkedList<>();
+        unsavedNomination = new LinkedList<>();
+        characterDescription = DESCRIPTION_STRING;
+    }
+
     public void setMovieById(BigDecimal id) {
+        movieCreate = false;
+        setup();
         movie = movieFacade.find(id);
         actorList = characterFacade.getActorsForMovie(id);
         movieNominationList = movieNominationConnectorFacade.getNominationsByMovie(movie);
-        unsavedCounties = new LinkedList<>();
         unsavedCounties.addAll(movie.getCountryCollection());
-        unsavedDirectors = new LinkedList<>();
         unsavedDirectors.addAll(movie.getDirectorCollection());
-        unsavedGenres = new LinkedList<>();
         unsavedGenres.addAll(movie.getGenreCollection());
-        unsavedCharacters = new LinkedList<>();
         unsavedCharacters.addAll(characterFacade.getCharactersForMovie(id));
-        unsavedNomination = new LinkedList<>();
         unsavedNomination.addAll(movieNominationList);
-        characterDescription = DESCRIPTION_STRING;
     }
 
     public List<Actor> getActorList() {
@@ -403,41 +411,42 @@ public class MovieController {
 
     public String save() {
         if (!movieNameCorrect || !posterCorrect || !dateCorrect || !characterNameCorrect || !budgetCorrect || !restrictionCorrect || !durationCorrect) {
+            dataCorrect = false;
             return null;
         }
         movieFacade.edit(movie);
         for (MovieNominationConnector mnc : movieNominationList) {
             movieNominationConnectorFacade.remove(mnc);
         }
-        for (MovieNominationConnector mnc : unsavedNomination) {
-            movieNominationConnectorFacade.create(mnc);
-        }
         List<Character> movieCharacters = characterFacade.getCharactersForMovie(movie.getId());
         for (Character character : movieCharacters) {
             characterFacade.remove(character);
         }
-        for (Character character : unsavedCharacters) {
-            characterFacade.create(character);
-        }
         for (Director director : movie.getDirectorCollection()) {
             director.getMovieCollection().remove(movie);
-            directorFacade.edit(director);
-        }
-        for (Director director : unsavedDirectors) {
-            director.getMovieCollection().add(movie);
             directorFacade.edit(director);
         }
         for (Country country : movie.getCountryCollection()) {
             country.getMovieCollection().remove(movie);
             countryFacade.edit(country);
         }
-        for (Country country : unsavedCounties) {
-            country.getMovieCollection().add(movie);
-            countryFacade.edit(country);
-        }
         for (Genre genre : movie.getGenreCollection()) {
             genre.getMovieCollection().remove(movie);
             genreFacade.edit(genre);
+        }
+        for (MovieNominationConnector mnc : unsavedNomination) {
+            movieNominationConnectorFacade.create(mnc);
+        }
+        for (Character character : unsavedCharacters) {
+            characterFacade.create(character);
+        }
+        for (Director director : unsavedDirectors) {
+            director.getMovieCollection().add(movie);
+            directorFacade.edit(director);
+        }
+        for (Country country : unsavedCounties) {
+            country.getMovieCollection().add(movie);
+            countryFacade.edit(country);
         }
         for (Genre genre : unsavedGenres) {
             genre.getMovieCollection().add(movie);
@@ -448,6 +457,10 @@ public class MovieController {
     }
 
     public String cancel() {
+        if (movieCreate) {
+            movieFacade.remove(movie);
+            return "index";
+        }
         setMovieById(movie.getId());
         return "MovieDetails";
     }
@@ -513,7 +526,12 @@ public class MovieController {
     }
 
     public String getBudget() {
-        return movie.getBudget().toString();
+        BigInteger budget = movie.getBudget();
+        if (budget == null) {
+            return "";
+        } else {
+            return budget.toString();
+        }
     }
 
     public void setBudget(String budget) {
@@ -531,7 +549,12 @@ public class MovieController {
     }
 
     public String getRestriction() {
-        return movie.getRestriction().toString();
+        Short restriction = movie.getRestriction();
+        if (restriction == null) {
+            return "";
+        } else {
+            return restriction.toString();
+        }
     }
 
     public void setRestriction(String restriction) {
@@ -549,7 +572,12 @@ public class MovieController {
     }
 
     public String getDuration() {
-        return movie.getDuration().toString();
+        Short duration = movie.getDuration();
+        if (duration == null) {
+            return "";
+        } else {
+            return duration.toString();
+        }
     }
 
     public void setDuration(String duration) {
@@ -603,5 +631,18 @@ public class MovieController {
             }
         }
         return false;
+    }
+
+    public String createNewMovie() {
+        movieCreate = true;
+        movie = new Movie();
+        movie.setName("New movie");
+        movieFacade.create(movie);
+        setup();
+        return "MovieEdit";
+    }
+
+    public boolean isDataCorrect() {
+        return dataCorrect;
     }
 }

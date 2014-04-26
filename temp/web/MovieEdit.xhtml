@@ -27,7 +27,7 @@
                             </td>
                             <td>
                                 <h:inputText value="${movieController.movieName}"/>
-                                <c:if test="${!movieController.movieNameCorrect}">
+                                <c:if test="${!movieController.dataCorrect and !movieController.movieNameCorrect}">
                                     <div class = "errorValidateMessage">
                                         Введено некорректное название
                                     </div>
@@ -39,7 +39,7 @@
                                 Дата выхода:
                             </td>
                             <td>
-                                <c:if test="${!movieController.dateCorrect}">
+                                <c:if test="${!movieController.dataCorrect and !movieController.dateCorrect}">
                                     <div class = "errorValidateMessage">
                                         Введена некорректная дата выхода
                                     </div>
@@ -59,7 +59,7 @@
                                 Постер:
                             </td>
                             <td>
-                                <c:if test="${!movieController.posterCorrect}">
+                                <c:if test="${!movieController.dataCorrect and !movieController.posterCorrect}">
                                     <div class = "errorValidateMessage">
                                         Введена некорректная ссылка
                                     </div>
@@ -123,7 +123,7 @@
                                     <br/>
                                     Имя героя:
                                     <h:inputText value="${movieController.characterName}"/>
-                                    <c:if test="${!movieController.characterNameCorrect}">
+                                    <c:if test="${!movieController.dataCorrect and !movieController.characterNameCorrect}">
                                         <div class = "errorValidateMessage">
                                             Введено некорректное имя героя
                                         </div>
@@ -155,7 +155,7 @@
                             </td>
                             <td>
                                 $<h:inputText value="${movieController.budget}"/>
-                                <c:if test="${!movieController.budgetCorrect}">
+                                <c:if test="${!movieController.dataCorrect and !movieController.budgetCorrect}">
                                     <div class = "errorValidateMessage">
                                         Введено некорректное значение бюджета
                                     </div>
@@ -169,7 +169,7 @@
                             <td>
                                 <h:inputText value="${movieController.restriction}" style="width: 30px;
                                              text-align: center;"/>+
-                                <c:if test="${!movieController.restrictionCorrect}">
+                                <c:if test="${!movieController.dataCorrect and !movieController.restrictionCorrect}">
                                     <div class = "errorValidateMessage">
                                         Введено некорректное ограничение по возрасту
                                     </div>
@@ -183,7 +183,7 @@
                             <td>
                                 <h:inputText value="${movieController.duration}" style="width: 30px;
                                              text-align: center;"/> мин.
-                                <c:if test="${!movieController.durationCorrect}">
+                                <c:if test="${!movieController.dataCorrect and !movieController.durationCorrect}">
                                     <div class = "errorValidateMessage">
                                         Введена некорректная продолжительность фильма
                                     </div>
@@ -227,9 +227,6 @@
                 </div>
                 <h:commandButton value="Сохранить" action="${movieController.save()}" />
                 <h:commandButton value="Отменить" action="${movieController.cancel()}" />
-                <div class="searchLink">
-                    <h:link value="Вернуться на страницу поиска" outcome="${searchController.backToSearch()}" />
-                </div>
             </div>
         </h:form>
     </h:body>

@@ -9,14 +9,11 @@ import entities.Character;
 import entities.CharacterItemPK;
 import java.math.BigDecimal;
 import java.util.Collection;
-import java.util.Map;
 import javax.faces.bean.ManagedBean;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import managedBeans.MovieController;
 
 /**
@@ -30,6 +27,7 @@ public class CharacterConverter implements Converter {
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
         String[] parts = value.split("-");
+        System.out.println(value);
         MovieController bean = (MovieController) context.getApplication().evaluateExpressionGet(context, "#{movieController}", MovieController.class);
         Collection<Character> c = bean.getCharacterMap().values();
         for (Character character : c) {
