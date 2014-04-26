@@ -123,7 +123,7 @@
                                     <br/>
                                     Имя героя:
                                     <h:inputText value="${movieController.characterName}"/>
-                                    <c:if test="${!movieController.dataCorrect and !movieController.characterNameCorrect}">
+                                    <c:if test="${!movieController.characterNameCorrect}">
                                         <div class = "errorValidateMessage">
                                             Введено некорректное имя героя
                                         </div>

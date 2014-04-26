@@ -41,6 +41,7 @@ import utils.DateFormatter;
     @NamedQuery(name = "Actor.findByBirthDate", query = "SELECT a FROM Actor a WHERE a.birthDate = :birthDate"),
     @NamedQuery(name = "Actor.findByPhoto", query = "SELECT a FROM Actor a WHERE a.photo = :photo")})
 public class Actor implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -101,15 +102,19 @@ public class Actor implements Serializable {
     }
 
     public String getFormattedBirthDate() {
-        Calendar date = Calendar.getInstance();
-        date.setTime(birthDate);
-        return DateFormatter.getFormattedDate(date);
+        if (birthDate == null) {
+            return "";
+        } else {
+            Calendar date = Calendar.getInstance();
+            date.setTime(birthDate);
+            return DateFormatter.getFormattedDate(date);
+        }
     }
 
     public void setFormattedBirthDate(String formattedBirthDate) {
         this.birthDate = DateFormatter.setFormattedDate(formattedBirthDate);
     }
-    
+
     public String getPhoto() {
         return photo;
     }
@@ -140,10 +145,7 @@ public class Actor implements Serializable {
             return false;
         }
         Actor other = (Actor) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+        return (other.id == null || this.id != null) && (this.id == null || this.id.equals(other.id));
     }
 
     @Override

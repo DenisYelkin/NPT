@@ -5,6 +5,7 @@
  */
 package managedBeans;
 
+import entities.Actor;
 import entities.Country;
 import entities.Director;
 import java.math.BigDecimal;
@@ -40,12 +41,14 @@ public class DirectorController {
     private boolean nameCorrect = true;
     private boolean photoCorrect = true;
     private boolean birthDateCorrect = true;
+    private boolean directorCreate;
     
     public Director getDirector() {
         return director;
     }
 
     public void setDirectorById(BigDecimal id) {
+        directorCreate = false;
         director = directorFacade.find(id);
     }
     
@@ -66,6 +69,10 @@ public class DirectorController {
     }
     
     public String cancel() {
+        if (directorCreate) {
+            directorFacade.remove(director);
+            return "index";
+        }
         setDirectorById(director.getId());
         return "Director";
     }
@@ -141,5 +148,13 @@ public class DirectorController {
         }
         director.setBirthDate(date);
         birthDateCorrect = true;
+    }
+    
+    public String createNewDirector() {
+        directorCreate = true;
+        director = new Director();
+        director.setName("Иванов Иван");
+        directorFacade.create(director);        
+        return "DirectorEdit";
     }
 }

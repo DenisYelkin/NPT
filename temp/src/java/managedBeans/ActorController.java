@@ -30,9 +30,9 @@ import utils.MovieCharacterPair;
 public class ActorController {
 
     private Map<String, Country> countryMap;
-    
+
     private Actor actor;
-    
+
     @EJB
     private ActorFacade actorFacade;
     @EJB
@@ -45,12 +45,14 @@ public class ActorController {
     private boolean nameCorrect = true;
     private boolean photoCorrect = true;
     private boolean birthDateCorrect = true;
-    
+    private boolean actorCreate;
+
     public Actor getActor() {
         return actor;
     }
 
     public void setActorById(BigDecimal id) {
+        actorCreate = false;
         actor = actorFacade.find(id);
         movieCharacterList = characterFacade.getMoviesWithCharactersForActor(id);
     }
@@ -58,14 +60,13 @@ public class ActorController {
     public List<MovieCharacterPair> getMovieCharacterList() {
         return movieCharacterList;
     }
-    
-    public String delete()
-    {
+
+    public String delete() {
         actorFacade.remove(actor);
         this.actor = null;
         return "index";
     }
-    
+
     public String save() {
         if (!nameCorrect || !photoCorrect || !birthDateCorrect) {
             return null;
@@ -74,8 +75,12 @@ public class ActorController {
         setActorById(actor.getId());
         return "Actor";
     }
-    
+
     public String cancel() {
+         if (actorCreate) {
+            actorFacade.remove(actor);
+            return "index";
+        }
         setActorById(actor.getId());
         return "Actor";
     }
@@ -112,11 +117,11 @@ public class ActorController {
     public void setBirthDateCorrect(boolean birthDateCorrect) {
         this.birthDateCorrect = birthDateCorrect;
     }
-    
+
     public String getName() {
         return actor.getName();
     }
-    
+
     public void setName(String name) {
         if (name.isEmpty()) {
             nameCorrect = false;
@@ -125,11 +130,11 @@ public class ActorController {
         actor.setName(name);
         nameCorrect = true;
     }
-    
+
     public String getPhoto() {
         return actor.getPhoto();
     }
-    
+
     public void setPhoto(String photo) {
         if (photo.isEmpty()) {
             photoCorrect = false;
@@ -138,11 +143,11 @@ public class ActorController {
         actor.setPhoto(photo);
         photoCorrect = true;
     }
-    
+
     public String getBirthDate() {
         return actor.getFormattedBirthDate();
     }
-    
+
     public void setBirthDate(String birthDate) {
         Date date = DateFormatter.setFormattedDate(birthDate);
         if (date == null || date.getYear() > 9999) {
@@ -151,5 +156,13 @@ public class ActorController {
         }
         actor.setBirthDate(date);
         birthDateCorrect = true;
+    }
+
+    public String createNewActor() {
+        actorCreate = true;
+        actor = new Actor();
+        actor.setName("Иванов Иван");
+        actorFacade.create(actor);        
+        return "ActorEdit";
     }
 }

@@ -42,9 +42,12 @@
                                 <h:inputText value="${actorController.photo}" />
                                 <c:if test="${!actorController.photoCorrect}">
                                     <div class = "errorValidateMessage">
-                                        Введена некорректная ссылка на фотографию
+                                        Введена некорректная ссылка на изображение
                                     </div>
                                 </c:if>
+                                <div class = "charNames">
+                                    Необходимо ввести ссылку на изображение
+                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -58,6 +61,11 @@
                                         Введена некорректная дата рождения
                                     </div>
                                 </c:if>
+                                <div class = "charNames">
+                                    Дату необходимо ввести
+                                    <br/>
+                                    в формате: DD-MM-YYYY
+                                </div>
                             </td>
                         </tr>
                         <tr>

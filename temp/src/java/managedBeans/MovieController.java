@@ -186,8 +186,14 @@ public class MovieController {
 
     public String updateRating(Users user) {
         Rate rate = movieFacade.getMovieRateForUser(user, movie);
-        rate.setRating(userRating);
-        rateFacade.edit(rate);
+        if (rate != null) {
+            rate.setRating(userRating);
+            rateFacade.edit(rate);
+        } else {
+            rate = new Rate(movie.getId(), user.getId());
+            rate.setRating(userRating);
+            rateFacade.create(rate);
+        }
         setMovieById(movie.getId());
         return "MovieDetails";
     }
@@ -415,8 +421,10 @@ public class MovieController {
             return null;
         }
         movieFacade.edit(movie);
-        for (MovieNominationConnector mnc : movieNominationList) {
-            movieNominationConnectorFacade.remove(mnc);
+        if (movieNominationList != null) {
+            for (MovieNominationConnector mnc : movieNominationList) {
+                movieNominationConnectorFacade.remove(mnc);
+            }
         }
         List<Character> movieCharacters = characterFacade.getCharactersForMovie(movie.getId());
         for (Character character : movieCharacters) {
@@ -537,6 +545,10 @@ public class MovieController {
     public void setBudget(String budget) {
         try {
             BigInteger movieBudget = new BigInteger(budget);
+            if (budget.length() > 18) {
+                budgetCorrect = false;
+                return;
+            }
             movie.setBudget(movieBudget);
             budgetCorrect = true;
         } catch (NumberFormatException e) {
@@ -560,6 +572,10 @@ public class MovieController {
     public void setRestriction(String restriction) {
         try {
             Short movieRestriction = Short.parseShort(restriction);
+            if (restriction.length() > 2) {
+                restrictionCorrect = false;
+                return;
+            }
             movie.setRestriction(movieRestriction);
             restrictionCorrect = true;
         } catch (NumberFormatException e) {
@@ -583,7 +599,11 @@ public class MovieController {
     public void setDuration(String duration) {
         try {
             Short movieDuration = Short.parseShort(duration);
-            movie.setRestriction(movieDuration);
+            if (duration.length() > 4) {
+                durationCorrect = false;
+                return;
+            }
+            movie.setDuration(movieDuration);
             durationCorrect = true;
         } catch (NumberFormatException e) {
             durationCorrect = false;
@@ -637,6 +657,8 @@ public class MovieController {
         movieCreate = true;
         movie = new Movie();
         movie.setName("New movie");
+        movie.setRating(BigDecimal.ZERO);
+        movie.setVoiceCount(0);
         movieFacade.create(movie);
         setup();
         return "MovieEdit";

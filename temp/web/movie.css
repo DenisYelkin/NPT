@@ -57,6 +57,7 @@ and open the template in the editor.
     border-top-width: 1px;
     border-top-style: solid;
     margin-top: 5px;
+    width: 700px;
 }
 
 .ratingRow{

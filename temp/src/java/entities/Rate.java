@@ -80,10 +80,6 @@ public class Rate implements Serializable {
         return rating;
     }
 
-    public void setCharacterName(Short rating) {
-        this.rating = rating;
-    }
-
     public Movie getMovie() {
         return movie;
     }
