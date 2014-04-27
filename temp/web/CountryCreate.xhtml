@@ -4,14 +4,18 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
-        <title>Добавление новой страны</title>
+            <title>${countryController.countryCreate}</title>
         <link rel="stylesheet" type="text/css" href="main.css"/>
         <link rel="stylesheet" type="text/css" href="peoples.css"/>
     </h:head>
     <h:body>
         <h:form>
-            <h1>Добавление новой страны</h1>
+            <h1>${countryController.countryCreate}</h1>
             <div class="container" style="width: 230px; margin-left: -115px">
+                <div class = "actionControls" style="float: right; margin-right: -10px;">
+                    <h:commandButton image="delete-icon.png" action="${countryController.delete()}" onclick="if (!confirm('Really want to do that?'))
+                                    return false"/>
+                </div>
                 <table cellspacing="0">
                     <tr>
                         <td>
@@ -28,7 +32,7 @@
                     </tr>
                 </table>
                 <h:commandButton value="Сохранить" action="${countryController.save()}" />
-                <h:commandButton value="Отменить" action="${countryController.cancel()}" />
+                <h:commandButton value="Отменить" action="${countryController.cancel()}" />                
             </div>
         </h:form>
     </h:body>

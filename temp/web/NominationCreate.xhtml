@@ -5,14 +5,18 @@
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <title>Добавление новой номинации</title>
+        <title>${nominationController.nominationCreate}</title>
         <link rel="stylesheet" type="text/css" href="main.css"/>
         <link rel="stylesheet" type="text/css" href="peoples.css"/>
     </h:head>
     <h:body>
         <h:form>
-            <h1>Добавление новой номинации</h1>
+            <h1>${nominationController.nominationCreate}</h1>
             <div class="container" style="width: 240px; margin-left: -120px">
+                <div class = "actionControls" style="float: right; margin-right: -10px;">
+                    <h:commandButton image="delete-icon.png" action="${nominationController.delete()}" onclick="if (!confirm('Really want to do that?'))
+                                    return false"/>
+                </div>
                 <table cellspacing="0">
                     <tr>
                         <td>

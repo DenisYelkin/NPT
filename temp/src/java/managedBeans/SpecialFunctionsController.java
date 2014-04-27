@@ -6,6 +6,8 @@
 package managedBeans;
 
 import entities.Actor;
+import entities.Award;
+import entities.Director;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -15,6 +17,8 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import session.ActorFacade;
+import session.AwardFacade;
+import session.DirectorFacade;
 import session.SpecialsFunctionsFacade;
 
 /**
@@ -26,34 +30,46 @@ import session.SpecialsFunctionsFacade;
 public class SpecialFunctionsController {
 
     private Map<String, Actor> actorMap;
-    
+    private Map<String, Director> directorMap;
+    private Map<String, Award> awardMap;
+
     @EJB
     private SpecialsFunctionsFacade facade;
-    
+
     @EJB
     private ActorFacade actorFacade;
+    
+    @EJB
+    private DirectorFacade directorFacade;
+    
+    @EJB
+    private AwardFacade awardFacade;
 
     private List resultList;
-    private String actor4;
+    private Actor actor4;
     private int year4;
-    private String actor5;
-    private String director5;
-    private String award6;
-    private int year6;
+    private Actor actor5;
+    private Director director5;
+    private Award award6;
     private int year7;
-    private String actor10;
+    private Actor actor10;
     private int fromYear10;
     private int toYear10;
 
-    public List getResultList() {      
-        if (resultList != null && resultList.size() > 0 && resultList.get(0) instanceof Object[])
-        {
+    public List getResultList() {
+        if (resultList != null && resultList.size() > 0 && resultList.get(0) instanceof Object[]) {
             List<String> result = new LinkedList<>();
             for (Iterator it = resultList.iterator(); it.hasNext();) {
                 Object[] obj = (Object[]) it.next();
-                result.add(obj[0]  + "  "  + obj[1]);
+                result.add(obj[0] + "  " + obj[1]);
+            }
+            if (result.isEmpty()) {
+                result.add("Ничего не найдено");
             }
             return result;
+        }
+        if (resultList != null && resultList.isEmpty()) {
+            resultList.add("Ничего не найдено");
         }
         return resultList;
     }
@@ -61,17 +77,35 @@ public class SpecialFunctionsController {
     public Map<String, Actor> getActorMap() {
         actorMap = new HashMap<>();
         List<Actor> actors = actorFacade.findAll();
-        for (Actor actor: actors) {
+        for (Actor actor : actors) {
             actorMap.put(actor.getName(), actor);
         }
         return actorMap;
     }
+
+    public Map<String, Director> getDirectorMap() {
+        directorMap = new HashMap<>();
+        List<Director> directors = directorFacade.findAll();
+        for (Director director : directors) {
+            directorMap.put(director.getName(), director);
+        }
+        return directorMap;
+    }
     
-    public String getActor4() {
+    public Map<String, Award> getAwardMap() {
+        awardMap = new HashMap<>();
+        List<Award> awards = awardFacade.findAll();
+        for (Award award : awards) {
+            awardMap.put(award.getName() + " (" + award.getYear() + ")", award);
+        }
+        return awardMap;
+    }
+    
+    public Actor getActor4() {
         return actor4;
     }
 
-    public void setActor4(String actor4) {
+    public void setActor4(Actor actor4) {
         this.actor4 = actor4;
     }
 
@@ -83,36 +117,28 @@ public class SpecialFunctionsController {
         this.year4 = year4;
     }
 
-    public String getActor5() {
+    public Actor getActor5() {
         return actor5;
     }
 
-    public void setActor5(String actor5) {
+    public void setActor5(Actor actor5) {
         this.actor5 = actor5;
     }
 
-    public String getDirector5() {
+    public Director getDirector5() {
         return director5;
     }
 
-    public void setDirector5(String director5) {
+    public void setDirector5(Director director5) {
         this.director5 = director5;
     }
 
-    public String getAward6() {
+    public Award getAward6() {
         return award6;
     }
 
-    public void setAward6(String award6) {
+    public void setAward6(Award award6) {
         this.award6 = award6;
-    }
-
-    public int getYear6() {
-        return year6;
-    }
-
-    public void setYear6(int year6) {
-        this.year6 = year6;
     }
 
     public int getYear7() {
@@ -123,11 +149,11 @@ public class SpecialFunctionsController {
         this.year7 = year7;
     }
 
-    public String getActor10() {
+    public Actor getActor10() {
         return actor10;
     }
 
-    public void setActor10(String actor10) {
+    public void setActor10(Actor actor10) {
         this.actor10 = actor10;
     }
 
@@ -146,7 +172,7 @@ public class SpecialFunctionsController {
     public void setToYear10(int toYear10) {
         this.toYear10 = toYear10 - 1900;
     }
-    
+
     public void setResultList(int i) {
         switch (i) {
             case 1:
@@ -159,13 +185,13 @@ public class SpecialFunctionsController {
                 resultList = facade.getBestMovies();
                 break;
             case 4:
-                resultList = facade.getMovieForActorByYear(actor4, year4);
+                resultList = facade.getMovieForActorByYear(actor4.getName(), year4);
                 break;
             case 5:
-                resultList = facade.getMoviesWithActorAndDirector(director5, actor5);
+                resultList = facade.getMoviesWithActorAndDirector(director5.getName(), actor5.getName());
                 break;
             case 6:
-                resultList = facade.getMoviesWithAwardInYear(year6, award6);
+                resultList = facade.getMoviesWithAwardInYear(award6.getYear(), award6.getName());
                 break;
             case 7:
                 resultList = facade.getCountriesWithoutMoviesInYear(year7);
@@ -177,7 +203,7 @@ public class SpecialFunctionsController {
                 resultList = facade.getMoviesWithBestReview();
                 break;
             case 10:
-                resultList = facade.getCharactersByActorForPeriod(actor10, fromYear10, toYear10);
+                resultList = facade.getCharactersByActorForPeriod(actor10.getName(), fromYear10, toYear10);
                 break;
             default:
                 throw new RuntimeException("Unknown function");

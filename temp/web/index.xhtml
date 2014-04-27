@@ -12,7 +12,7 @@
     <h:body>
         <h:form>
             <h1>
-                SEARCH
+                ПОИСК
             </h1>
             <c:if test="${userController.currentUsers != null}">
                 <div class="addControl">
@@ -22,22 +22,22 @@
                     <br/>
                     <h:commandButton value="Добавить режиссера" action="${directorController.createNewDirector()}" />
                     <br/>
-                    <h:commandButton value="Добавить страну" action="${countryController.create()}" />
+                    <h:commandButton value="Добавить страну" action="${countryController.create(null)}" />
                     <br/>
-                    <h:commandButton value="Добавить номинацию" action="${nominationController.create()}" />
+                    <h:commandButton value="Добавить номинацию" action="${nominationController.create(null)}" />
                     <br/>
-                    <h:commandButton value="Добавить награду" action="${awardController.create()}" />
+                    <h:commandButton value="Добавить награду" action="${awardController.create(null)}" />
                 </div>
             </c:if>
             <ui:include src="/Login.xhtml"/>
             <div class="container">
                 <h5>
-                    Enter what you want to find or
-                    <h:link value="try special functions" outcome="SpecialFunctions" />
+                    Введите выражение для поиска или
+                    <h:link value=" воспользуйтесь дополнительными функциями" outcome="SpecialFunctions" />
                 </h5>
                 <div class = "search">
                     <h:inputText  value="${searchController.searchQuerySubstring}"/>
-                    <h:commandButton action="${searchController.doSearch()}" value="Search"/>
+                    <h:commandButton action="${searchController.doSearch()}" value="Найти"/>
                 </div>
                 <br/>
                 <div class="search">
@@ -45,6 +45,11 @@
                         <f:selectItem itemValue="Movie" itemLabel="Искать фильмы"  />
                         <f:selectItem itemValue="Actor" itemLabel="Искать актеров" />
                         <f:selectItem itemValue="Director" itemLabel="Искать режисёров" />
+                        <c:if test="${userController.currentUsers != null}">
+                            <f:selectItem itemValue="Country" itemLabel="Искать страну" />
+                            <f:selectItem itemValue="Nomination" itemLabel="Искать номинацию" />
+                            <f:selectItem itemValue="Award" itemLabel="Искать награду" />
+                        </c:if>
                     </h:selectOneRadio>
                 </div>
                 <br/>
@@ -84,6 +89,33 @@
                                         <h:link value="${director.name}" outcome="Director">
                                             <f:param name="directorId" value="${director.id}" />
                                         </h:link>
+                                    </td>
+                                </tr>
+                            </ui:repeat>
+                        </c:if>
+                        <c:if test="${searchController.searchType == 'Country'}">
+                            <ui:repeat var="country" value="${searchController.searchResult}" varStatus="status">
+                                <tr class="searchResult">
+                                    <td class="searchResult">
+                                        <h:commandLink value="${country.name}" action="${countryController.create(country)}" />
+                                    </td>
+                                </tr>
+                            </ui:repeat>
+                        </c:if>
+                        <c:if test="${searchController.searchType == 'Nomination'}">
+                            <ui:repeat var="nomination" value="${searchController.searchResult}" varStatus="status">
+                                <tr class="searchResult">
+                                    <td class="searchResult">
+                                        <h:commandLink value="${nomination.name} - ${nomination.awardId.name} (${nomination.awardId.year})" action="${nominationController.create(nomination)}"/>
+                                    </td>
+                                </tr>
+                            </ui:repeat>
+                        </c:if>
+                        <c:if test="${searchController.searchType == 'Award'}">
+                            <ui:repeat var="award" value="${searchController.searchResult}" varStatus="status">
+                                <tr class="searchResult">
+                                    <td class="searchResult">
+                                        <h:commandLink value="${award.name} (${award.year})" action="${awardController.create(award)}"/>                                            
                                     </td>
                                 </tr>
                             </ui:repeat>

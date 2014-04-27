@@ -7,6 +7,7 @@
 package session;
 
 import entities.Nomination;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -28,5 +29,9 @@ public class NominationFacade extends AbstractFacade<Nomination> {
 
     public NominationFacade() {
         super(Nomination.class);
+    }
+    
+    public List<Nomination> getNominations(String substr) {
+        return em.createNamedQuery("Nomination.findBySubstring").setParameter("q", "%" + substr + "%").getResultList();
     }
 }

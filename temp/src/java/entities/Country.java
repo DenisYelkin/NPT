@@ -10,7 +10,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -35,6 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Country.findAll", query = "SELECT c FROM Country c"),
+    @NamedQuery(name = "Country.findBySubstring", query = "SELECT m FROM Country m WHERE LOWER(m.name) like LOWER(:q) ORDER BY m.name"),
     @NamedQuery(name = "Country.findById", query = "SELECT c FROM Country c WHERE c.id = :id"),
     @NamedQuery(name = "Country.findByName", query = "SELECT c FROM Country c WHERE LOWER(c.name) = LOWER(:name)")})
 public class Country implements Serializable {

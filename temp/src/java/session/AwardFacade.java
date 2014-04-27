@@ -7,8 +7,9 @@
 package session;
 
 import entities.Award;
-import javax.ejb.Stateless;
+import java.util.List;
 import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -31,4 +32,7 @@ public class AwardFacade extends AbstractFacade<Award> {
         super(Award.class);
     }
     
+    public List<Award> getAwards(String substr) {
+        return em.createNamedQuery("Award.findBySubstring").setParameter("q", "%" + substr + "%").getResultList();
+    }
 }

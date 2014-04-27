@@ -30,6 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Nomination.findAll", query = "SELECT n FROM Nomination n"),
+    @NamedQuery(name = "Nomination.findBySubstring", query = "SELECT m FROM Nomination m WHERE LOWER(m.name) like LOWER(:q) ORDER BY m.name"),
     @NamedQuery(name = "Nomination.findById", query = "SELECT n FROM Nomination n WHERE n.id = :id"),
     @NamedQuery(name = "Nomination.findByName", query = "SELECT n FROM Nomination n WHERE n.name = :name")})
 public class Nomination implements Serializable {

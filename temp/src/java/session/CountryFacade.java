@@ -38,4 +38,8 @@ public class CountryFacade extends AbstractFacade<Country> {
             return (Country) result.get(0);
         return null;
     }
+    
+    public List<Country> getCountries(String substr) {
+        return em.createNamedQuery("Country.findBySubstring").setParameter("q", "%" + substr + "%").getResultList();
+    }
 }

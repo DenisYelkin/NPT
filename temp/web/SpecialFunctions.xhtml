@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Special functions</title>
         <link rel="stylesheet" type="text/css" href="main.css"/>
@@ -37,7 +38,9 @@
                 <tr>
                     <td>
                         Для актера
-                        <h:inputText value="${specialFunctionsController.actor4}"/>
+                        <h:selectOneMenu value="${specialFunctionsController.actor4}" converter="#{actorConverterBean}">
+                            <f:selectItems value="${specialFunctionsController.actorMap}"/>
+                        </h:selectOneMenu>
                         вывести фильмы за последние
                         <h:inputText value="${specialFunctionsController.year4}"/>
                         лет.
@@ -47,18 +50,22 @@
                 <tr>
                     <td>
                         Фильм режиссера
-                        <h:inputText value="${specialFunctionsController.director5}"/>
+                        <h:selectOneMenu value="${specialFunctionsController.director5}" converter="#{directorConverterBean}">
+                            <f:selectItems value="${specialFunctionsController.directorMap}"/>
+                        </h:selectOneMenu>
                         с участием актера
-                        <h:inputText value="${specialFunctionsController.actor5}"/>
+                        <h:selectOneMenu value="${specialFunctionsController.actor5}" converter="#{actorConverterBean}">
+                            <f:selectItems value="${specialFunctionsController.actorMap}"/>
+                        </h:selectOneMenu>
                         <h:commandButton action="${specialFunctionsController.setResultList(5)}" value="Найти"/>
                     </td>
                 </tr>
                 <tr>
                     <td>
                         Фильмы с наградой 
-                        <h:inputText value="${specialFunctionsController.award6}"/>
-                        в году
-                        <h:inputText value="${specialFunctionsController.year6}"/>
+                        <h:selectOneMenu value="${specialFunctionsController.award6}" converter="#{awardConverterBean}">
+                            <f:selectItems value="${specialFunctionsController.awardMap}"/>
+                        </h:selectOneMenu>
                         <h:commandButton action="${specialFunctionsController.setResultList(6)}" value="Найти"/>
                     </td>
                 </tr>
@@ -85,7 +92,9 @@
                 <tr>
                     <td>
                         Герои, которых играл актер
-                        <h:inputText value="${specialFunctionsController.actor10}"/>
+                        <h:selectOneMenu value="${specialFunctionsController.actor10}" converter="#{actorConverterBean}">
+                            <f:selectItems value="${specialFunctionsController.actorMap}"/>
+                        </h:selectOneMenu>
                         в период с года 
                         <h:inputText value="${specialFunctionsController.fromYear10}"/>
                         по

@@ -84,8 +84,6 @@ public class UserController {
     }
 
     public String validate() {
-        login = "alena";
-        password = "*****";
         Users user = usersFacade.getUserByLogin(login);
         if (user != null && user.getPassword().equals(password)) {
             this.currentUsers = user;
@@ -100,6 +98,9 @@ public class UserController {
     }
 
     public String logout() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        SearchController bean = (SearchController) context.getApplication().evaluateExpressionGet(context, "#{searchController}", SearchController.class);
+        bean.setSearchResult(null);
         currentUsers = null;
         return null;
     }

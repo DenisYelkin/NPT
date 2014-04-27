@@ -9,6 +9,7 @@ import entities.Country;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import session.CountryFacade;
 
 /**
@@ -25,6 +26,8 @@ public class CountryCreateController {
     private CountryFacade countryFacade;
 
     private boolean nameCorrect = true;
+
+    private boolean countryCreate;
 
     public String getName() {
         return country.getName();
@@ -43,10 +46,24 @@ public class CountryCreateController {
         return nameCorrect;
     }
 
-    public String create() {
-        country = new Country();
-        countryFacade.create(country);
+    public String create(Country country) {
+        if (country == null) {
+            countryCreate = true;
+            this.country = new Country();
+            countryFacade.create(this.country);
+        } else {
+            countryCreate = false;
+            this.country = country;
+        }
         return "CountryCreate";
+    }
+
+    public String getCountryCreate() {
+        return countryCreate ? "Создание новой страны" : "Редактирование страны";
+    }
+
+    public boolean isCreateCountry() {
+        return countryCreate;
     }
 
     public String save() {
@@ -58,7 +75,19 @@ public class CountryCreateController {
     }
 
     public String cancel() {
-        countryFacade.remove(country);
+        if (countryCreate) {
+            countryFacade.remove(country);
+        }
+        nameCorrect = true;
         return "index";
+    }
+
+    public String delete() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        SearchController bean = (SearchController) context.getApplication().evaluateExpressionGet(context, "#{searchController}", SearchController.class);
+        countryFacade.remove(country);
+        this.country = null;
+        nameCorrect = true;
+        return bean.backToSearch();
     }
 }
