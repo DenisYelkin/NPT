@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Добавление новой номинации</title>
+        <link rel="stylesheet" type="text/css" href="main.css"/>
+        <link rel="stylesheet" type="text/css" href="peoples.css"/>
+    </h:head>
+    <h:body>
+        <h:form>
+            <h1>Добавление новой номинации</h1>
+            <div class="container" style="width: 240px; margin-left: -120px">
+                <table cellspacing="0">
+                    <tr>
+                        <td>
+                            Название:
+                        </td>
+                        <td>
+                            <h:inputText value="${nominationController.name}" />
+                            <c:if test="${!nominationController.nominationNameCorrect}">
+                                <div class = "errorValidateMessage">
+                                    Введено некорректное название номинации
+                                </div>
+                            </c:if>   
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Награда:
+                        </td>
+                        <td>
+                            <c:if test="${nominationController.awardMap != null and nominationController.awardMap.size() != 0}">
+                                <h:selectOneMenu value="${nominationController.nomination.awardId}" converter="#{awardConverterBean}">
+                                    <f:selectItems value="${nominationController.awardMap}"/>
+                                </h:selectOneMenu>
+                            </c:if>
+                        </td>
+                    </tr>
+                </table>
+                <h:commandButton value="Сохранить" action="${nominationController.save()}" />
+                <h:commandButton value="Отменить" action="${nominationController.cancel()}" />
+            </div>
+        </h:form>
+    </h:body>
+</html>
+

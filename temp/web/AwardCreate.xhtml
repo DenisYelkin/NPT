@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Добавление новой награды</title>
+        <link rel="stylesheet" type="text/css" href="main.css"/>
+        <link rel="stylesheet" type="text/css" href="peoples.css"/>
+    </h:head>
+    <h:body>
+        <h:form>
+            <h1>Добавление новой награды</h1>
+            <div class="container" style="width: 250px; margin-left: -125px">
+                <table cellspacing="0">
+                    <tr>
+                        <td>
+                            Название:
+                        </td>
+                        <td>
+                            <h:inputText value="${awardController.name}" />
+                            <c:if test="${!awardController.nameCorrect}">
+                                <div class = "errorValidateMessage">
+                                    Введено некорректное имя награды
+                                </div>
+                            </c:if>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Место проведения:
+                        </td>
+                        <td>
+                            <h:inputText value="${awardController.location}" />
+                            <c:if test="${!awardController.locationCorrect}">
+                                <div class = "errorValidateMessage">
+                                    Введено некорректное место проведения
+                                </div>
+                            </c:if>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Год:
+                        </td>
+                        <td>
+                            <h:inputText value="${awardController.awardYear}" />
+                            <c:if test="${!awardController.yearCorrect}">
+                                <div class = "errorValidateMessage">
+                                    Введен некорректный год
+                                </div>
+                            </c:if>
+                        </td>
+                    </tr>
+                </table>
+                <h:commandButton value="Сохранить" action="${awardController.save()}" />
+                <h:commandButton value="Отменить" action="${awardController.cancel()}" />
+            </div>
+        </h:form>
+    </h:body>
+</html>
+

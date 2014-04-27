@@ -5,12 +5,16 @@
  */
 package managedBeans;
 
+import entities.Actor;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import session.ActorFacade;
 import session.SpecialsFunctionsFacade;
 
 /**
@@ -21,8 +25,13 @@ import session.SpecialsFunctionsFacade;
 @SessionScoped
 public class SpecialFunctionsController {
 
+    private Map<String, Actor> actorMap;
+    
     @EJB
-    SpecialsFunctionsFacade facade;
+    private SpecialsFunctionsFacade facade;
+    
+    @EJB
+    private ActorFacade actorFacade;
 
     private List resultList;
     private String actor4;
@@ -49,6 +58,15 @@ public class SpecialFunctionsController {
         return resultList;
     }
 
+    public Map<String, Actor> getActorMap() {
+        actorMap = new HashMap<>();
+        List<Actor> actors = actorFacade.findAll();
+        for (Actor actor: actors) {
+            actorMap.put(actor.getName(), actor);
+        }
+        return actorMap;
+    }
+    
     public String getActor4() {
         return actor4;
     }

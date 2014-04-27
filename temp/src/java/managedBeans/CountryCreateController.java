@@ -35,8 +35,8 @@ public class CountryCreateController {
             nameCorrect = false;
         } else {
             country.setName(name);
+            nameCorrect = true;
         }
-
     }
 
     public boolean isNameCorrect() {
@@ -61,5 +61,4 @@ public class CountryCreateController {
         countryFacade.remove(country);
         return "index";
     }
-
 }

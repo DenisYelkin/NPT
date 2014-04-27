@@ -24,9 +24,9 @@
                     <br/>
                     <h:commandButton value="Добавить страну" action="${countryController.create()}" />
                     <br/>
-                    <h:commandButton value="Добавить номинацию" action="index" />
+                    <h:commandButton value="Добавить номинацию" action="${nominationController.create()}" />
                     <br/>
-                    <h:commandButton value="Добавить награду" action="index" />
+                    <h:commandButton value="Добавить награду" action="${awardController.create()}" />
                 </div>
             </c:if>
             <ui:include src="/Login.xhtml"/>
