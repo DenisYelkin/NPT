@@ -2,6 +2,12 @@ DROP TRIGGER onUserDelete;
 drop trigger onActorDelete;
 drop trigger onMovieDelete;
 drop trigger rate_trigger;
+drop trigger onDirectorDelete;
+drop trigger onCountryDelete;
+drop trigger onNominationDelete;
+drop trigger onAwardDelete;
+
+
 drop sequence unique_id;
 drop table MovieDirectorConnector;
 drop table MovieGenreConnector;
@@ -249,5 +255,49 @@ BEGIN
   WHERE USER_ID = :OLD.id;
   DELETE FROM REVIEW
   WHERE USER_ID = :OLD.ID;
+END;
+/
+
+CREATE OR REPLACE TRIGGER onDirectorDelete
+AFTER DELETE
+ON DIRECTOR
+FOR EACH ROW
+BEGIN
+	DELETE FROM MOVIEDIRECTORCONNECTOR
+	WHERE DIRECTOR_ID = :OLD.ID
+END;
+/
+
+CREATE OR REPLACE TRIGGER onCountryDelete
+AFTER DELETE
+ON COUNTRY
+FOR EACH ROW
+BEGIN
+	DELETE FROM MOVIECOUNTRYCONNECTOR
+	WHERE COUNTRY_ID = :OLD.ID;
+	DELETE FROM ACTOR
+	WHERE BIRTH_COUNTRY = :OLD.ID;
+	DELETE FROM DIRECTOR
+	WHERE BIRTH_COUNTRY = :OLD.ID;
+END;
+/
+
+CREATE OR REPLACE TRIGGER onNominationDelete
+AFTER DELETE
+ON NOMINATION
+FOR EACH ROW
+BEGIN
+	DELETE FROM MOVIENOMINATIONCONNECTOR
+	WHERE NOMINATION_ID = :OLD.ID;
+END;
+/
+
+CREATE OR REPLACE TRIGGER onAwardDelete
+AFTER DELETE
+ON AWARD
+FOR EACH ROW
+BEGIN
+	DELETE FROM nomination
+	WHERE award_id = :OLD.ID;
 END;
 /
